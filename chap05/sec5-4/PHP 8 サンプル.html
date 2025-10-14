@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <h1>PHP 8 サンプル</h1>
+  <p>以下のURLでアクセスされました<br>
+    <span id="url"></span>
+  </p>
+  <p><a href="rawurlencode.php">戻る</a>
+  </p>
+  <script>
+    'use strict';
+
+    let urltxt = location.href;
+    document.getElementById('url'), textContent = urltxt;
+  </script>
+</body>
+
+</html>
