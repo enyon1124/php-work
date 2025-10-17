@@ -1,0 +1,28 @@
+@charset "UTF-8";
+
+div {
+  margin: lem;
+}
+
+li {
+  list-style-type: none;
+  margin-bottom: 1em;
+}
+
+ol>li {
+  list-style-type: decimal;
+  margin-bottom: 0;
+}
+
+a {
+  color: #5e78c1;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #b04188;
+}
+
+.error {
+  color: #FF0000;
+}
