@@ -22,18 +22,27 @@
     ?>
 
     <?php
-    $discount = 0.8;
+    require_once('saledata.php');
+    $couponCode = 'ha45as';
+    $goodsID = 'ax102';
+    $discount = getCouponRate($couponCode);
+    $tanka = getPrice($goodsID);
+    if (is_null($discount) || is_null($tanka)) {
+      $err = '<div class"error">不正な操作がありました</div>';
+      exit($err);
+    }
+    ?>
+    <?php
     $off = (1 - $discount) * 100;
     if ($discount > 0) {
       echo "<h2>このページでの購入は{$off}%OFFになります。</h2>";
     }
-    $tanka = 2900;
     $tanka_fmt = number_format($tanka);
     ?>
 
     <form action="discount.php" method="POST">
-      <input type="hidden" name="discount" value="<?php echo $discount; ?>">
-      <input type="hidden" name="tanka" value="<?php echo $tanka; ?>">
+      <input type="hidden" name="couponCode" value="<?php echo h($couponCode); ?>">
+      <input type="hidden" name="goodsID" value="<?php echo h($goodsID); ?>">
       <ul>
         <li>単価：<?php echo $tanka_fmt; ?>円</li>
         <li><label>個数：

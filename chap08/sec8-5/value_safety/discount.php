@@ -21,21 +21,25 @@
 
     <?php
     $errors = [];
-    if (isset($_POST['discount'])) {
-      $discount = $_POST['discount'];
-      if (!is_numeric($discount)) {
-        $errors[] = "割引率の数値エラー";
-      }
+    if (isset($_POST['couponCode'])) {
+      $couponCode = $_POST['couponCode'];
     } else {
-      $errors[] = "割り義気率が未定";
+      $couponCode = '';
     }
-    if (isset($_POST['tanka'])) {
-      $tanka = $_POST['tanka'];
-      if (!ctype_digit($tanka)) {
-        $errors[] = "単価の数値エラー";
-      }
+    if (isset($_POST['goodsID'])) {
+      $goodsID = $_POST['goodsID'];
     } else {
-      $errors[] = "単価が未設定";
+      $goodsID = '';
+    }
+    ?>
+
+    <?php
+    require_once('saledata.php');
+    $discount = getCouponRate($couponCode);
+    $tanka = getPrice(($goodsID));
+    if (is_null($discount) || is_null($tanka)) {
+      $err = '<div class="error"> 不正な操作がありました</div>';
+      exit($err);
     }
     ?>
 
