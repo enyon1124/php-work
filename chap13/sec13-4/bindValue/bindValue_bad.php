@@ -8,7 +8,8 @@ $dsn = "mysql:host={$host};dbname={$dbName};charset=utf8";
 //  ブラウザから送られてきた値
 $min = 20;
 $max = 40;
-$sex = '女';
+// $sex = '女';
+
 ?>
 <!DOCTYPE html>
 <html lang="ja">

@@ -7,11 +7,11 @@ function h($data) {
 
 // $data -- 文字列、配列OK。
 // ただしPHP7.2.0以降。
-// true: 大丈夫。false: 危険（文字コード攻撃）
+// true: 大丈夫。false: 危険(文字コード攻撃)
 function cken($data) {
   return mb_check_encoding($data, 'UTF-8');
 }
-
+/*
 // $data -- 文字列、配列OK。
 // $_POSTを丸ごとHTMLエスケープするためのもの。
 function es($data, $charset='UTF-8') {
@@ -21,3 +21,4 @@ function es($data, $charset='UTF-8') {
     return htmlspecialchars($data, ENT_QUOTES, $charset);
   }
 }
+*/

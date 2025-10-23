@@ -1,24 +1,33 @@
 <?php
 require_once('../lib/util.php');
-$user = "testuser";
-$password = "testuser";
-$dbName = "testdb";
+$user = "inventoryuser";
+$password = "inventoryuser";
+$dbName = "inventory";
 $host = "localhost:3306";
 $dsn = "mysql:host={$host};dbname={$dbName};charset=utf8";
-// ブラウザから送られてきた値
-$min = 20;
-$max = 40;
-$sex = '女';
-// $sex = "' or 1 = 1 -- '";
+$sql = <<< EOD
+  SELECT
+    g.id AS goods_id,
+    g.name AS goods_name,
+    g.size,
+    b.name AS brand_name,
+    s.quantity
+  FROM goods g
+    INNER JOIN brand b
+    ON g.brand = b.id
+      LEFT OUTER JOIN stock s
+      ON g.id = s.goods_id
+  ORDER BY g.id
+EOD;
 ?>
 <!DOCTYPE html>
 <html lang="ja">
 
 <head>
   <meta charset="UTF-8">
-  <title>Document</title>
+  <title>レコードを取り出す</title>
   <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/tablestyle.css">
+  <link rel="stylesheet" href="../css//tablestyle.css">
 </head>
 
 <body>
@@ -28,16 +37,8 @@ $sex = '女';
       $pdo = new PDO($dsn, $user, $password);
       $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
       $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-      echo "データベース{$dbName}に接続しました";
 
-      $sql = <<< EOD
-          SELECT * FROM member
-          WHERE age >= :min AND age <= :max AND sex = :sex
-          EOD;
       $stm = $pdo->prepare($sql);
-      $stm->bindValue(':min', $min, PDO::PARAM_INT);
-      $stm->bindValue(':max', $max, PDO::PARAM_INT);
-      $stm->bindValue(':sex', $sex, PDO::PARAM_STR);
       $stm->execute();
       $result = $stm->fetchAll(PDO::FETCH_ASSOC);
     ?>
@@ -45,19 +46,21 @@ $sex = '女';
         <thead>
           <tr>
             <th>ID</th>
-            <th>名前</th>
-            <th>年齢</th>
-            <th>性別</th>
+            <th>商品</th>
+            <th>サイズ</th>
+            <th>ブランド</th>
+            <th>在庫</th>
           </tr>
         </thead>
         <tbody>
           <?php
           foreach ($result as $row) {
             echo "<tr>";
-            echo "<td>", h($row['id']), "</td>";
-            echo "<td>", h($row['name']), "</td>";
-            echo "<td>", h($row['age']), "</td>";
-            echo "<td>", h($row['sex']), "</td>";
+            echo "<td>", h($row['goods_id']), "</td>";
+            echo "<td>", h($row['goods_name']), "</td>";
+            echo "<td>", h($row['size']), "</td>";
+            echo "<td>", h($row['brand_name']), "</td>";
+            echo "<td>", h($row['quantity']), "</td>";
             echo "</tr>";
           }
           ?>

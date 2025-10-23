@@ -1,15 +1,14 @@
 <?php
-require_once('../lib/util.php');
+function h($str)
+{
+  return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
+}
+
 $user = "testuser";
 $password = "testuser";
 $dbName = "testdb";
 $host = "localhost:3306";
 $dsn = "mysql:host={$host};dbname={$dbName};charset=utf8";
-// ブラウザから送られてきた値
-$min = 20;
-$max = 40;
-$sex = '女';
-// $sex = "' or 1 = 1 -- '";
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -17,27 +16,20 @@ $sex = '女';
 <head>
   <meta charset="UTF-8">
   <title>Document</title>
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/tablestyle.css">
 </head>
 
 <body>
   <div>
     <?php
+    $id = (int)$_POST['id'] ?? '';
     try {
       $pdo = new PDO($dsn, $user, $password);
       $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
       $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-      echo "データベース{$dbName}に接続しました";
 
-      $sql = <<< EOD
-          SELECT * FROM member
-          WHERE age >= :min AND age <= :max AND sex = :sex
-          EOD;
+      $sql = "SELECT * FROM member WHERE id = :id";
       $stm = $pdo->prepare($sql);
-      $stm->bindValue(':min', $min, PDO::PARAM_INT);
-      $stm->bindValue(':max', $max, PDO::PARAM_INT);
-      $stm->bindValue(':sex', $sex, PDO::PARAM_STR);
+      $stm->bindValue(':id', $id, PDO::PARAM_INT);
       $stm->execute();
       $result = $stm->fetchAll(PDO::FETCH_ASSOC);
     ?>
@@ -70,6 +62,8 @@ $sex = '女';
       exit();
     }
     ?>
+    <hr>
+    <a href="index.php">もどる</a>
   </div>
 </body>
 
