@@ -18,16 +18,16 @@ $sql = <<< EOD
       LEFT OUTER JOIN stock s
       ON g.id = s.goods_id
   ORDER BY g.id
-EOD;
+  EOD;
 ?>
 <!DOCTYPE html>
 <html lang="ja">
 
 <head>
   <meta charset="UTF-8">
-  <title>レコードを取り出す</title>
+  <title>Document</title>
   <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css//tablestyle.css">
+  <link rel="stylesheet" href="../css/tablestyle.css">
 </head>
 
 <body>

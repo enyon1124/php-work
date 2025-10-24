@@ -6,16 +6,19 @@ $dbName = "inventory";
 $host = "localhost:3306";
 $dsn = "mysql:host={$host};dbname={$dbName};charset=utf8";
 $sql = <<< EOD
-      SELECT
-        g.id AS goods_id,
-        g.name AS goods_name,
-        g.size,
-        b.name AS brand_name
-      FROM goods g
-        INNER JOIN brand b
-        ON g.brand = b.id
-      ORDER BY g.id
-      EOD;
+  SELECT
+    g.id AS goods_id,
+    g.name AS goods_name,
+    g.size,
+    b.name AS brand_name,
+    s.quantity
+  FROM goods g
+    INNER JOIN brand b
+    ON g.brand = b.id
+      LEFT OUTER JOIN stock s
+      ON g.id = s.goods_id
+  ORDER BY g.id
+  EOD;
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -46,6 +49,7 @@ $sql = <<< EOD
             <th>商品</th>
             <th>サイズ</th>
             <th>ブランド</th>
+            <th>在庫</th>
           </tr>
         </thead>
         <tbody>
@@ -56,6 +60,7 @@ $sql = <<< EOD
             echo "<td>", h($row['goods_name']), "</td>";
             echo "<td>", h($row['size']), "</td>";
             echo "<td>", h($row['brand_name']), "</td>";
+            echo "<td>", h($row['quantity']), "</td>";
             echo "</tr>";
           }
           ?>
@@ -68,6 +73,8 @@ $sql = <<< EOD
       exit();
     }
     ?>
+    <hr>
+    <p><a href="insertform.php">新規追加</a></p>
   </div>
 </body>
 

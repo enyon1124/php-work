@@ -1,0 +1,13 @@
+SELECT
+  g.id AS goods_id,
+  g.name AS goods_name,
+  g.size,
+  b.name AS brand_name,
+  s.quantity
+FROM goods g
+  INNER JOIN brand b
+  ON g.brand = b.id
+    LEFT OUTER JOIN stock s
+    ON g.id = s.goods_id
+ORDER BY g.id
+
